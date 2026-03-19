@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - NeuroNotes</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800&display=swap"
+        rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../static/assets/css/global.css">
+    <link rel="stylesheet" href="../static/assets/css/login.css">
+    <!-- We reuse login.css since layouts are identical -->
+</head>
+
+<body>
+    <div class="auth-bg">
+        <div class="auth-orb auth-orb-1"></div>
+        <div class="auth-orb auth-orb-2"></div>
+    </div>
+
+    <div class="split-layout">
+        <!-- Left Side: Visual / Value Props -->
+        <div class="visual-side"
+            style="background: radial-gradient(circle at center, rgba(99,102,241,0.05) 0%, rgba(0,0,0,0.4) 100%);">
+            <a href="/" class="back-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Back to Home
+            </a>
+
+            <div class="visual-content reveal active">
+                <h1 class="text-gradient" style="font-size: 3rem;">Establish your AI baseline.</h1>
+                <p>Join thousands of researchers using semantic vector space to organize, analyze, and synthesize their
+                    intellectual property.</p>
+
+                <div class="feature-list">
+                    <!-- Feature 1 -->
+                    <div class="feature-item">
+                        <div class="feature-icon icon-blue">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                            </svg>
+                        </div>
+                        <span class="feature-text">High-Dimensional Knowledge Graph</span>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="feature-item">
+                        <div class="feature-icon icon-purple">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M12 2a10 10 0 0 0-10 10c0 5.25 4 9.5 9.25 9.92A1.5 1.5 0 0 0 13 20.46V15l-3-3 3-3V6l-3 3-3-3 3-3V2Z">
+                                </path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </div>
+                        <span class="feature-text">Retrieval Augmented Generation</span>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="feature-item">
+                        <div class="feature-icon icon-blue-light">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="16 18 22 12 16 6"></polyline>
+                                <polyline points="8 6 2 12 8 18"></polyline>
+                            </svg>
+                        </div>
+                        <span class="feature-text">Deterministic Citations</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side: Form -->
+        <div class="form-side">
+            <div class="form-container reveal active" style="transition-delay: 0.2s;">
+                <h2 class="welcome-title text-left" style="font-size: 2.5rem; margin-bottom: 0.25rem;">Initialize</h2>
+                <p class="welcome-subtitle text-left mb-8">Deploy your first workspace.</p>
+
+                {% if error %}
+                <div class="glass-panel"
+                    style="background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3); color: #fca5a5; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; text-align: center; font-size: 0.875rem;">
+                    {{ error }}
+                </div>
+                {% endif %}
+
+                <form action="/signup" method="POST">
+                    <!-- Full Name -->
+                    <div class="input-group">
+                        <label for="fullname">Full Name</label>
+                        <div class="input-with-icon">
+                            <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            <input type="text" id="fullname" name="fullname" placeholder="Alan Turing" required>
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="input-group">
+                        <label for="email">Email address</label>
+                        <div class="input-with-icon">
+                            <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                                </path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                            <input type="email" id="email" name="email" placeholder="turing@enigma.com" required>
+                        </div>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <div class="input-with-icon">
+                            <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            <input type="password" id="password" name="password" placeholder="Create a strong password"
+                                required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block mt-6" style="padding: 1rem;">Deploy
+                        Account</button>
+
+                    <div class="text-center mt-8 text-sm text-muted">
+                        Already initialized? <a href="/login"
+                            style="color: var(--primary-color); font-weight: 500;">Authenticate here</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

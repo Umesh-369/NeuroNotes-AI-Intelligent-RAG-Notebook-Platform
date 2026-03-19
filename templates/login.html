@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - NeuroNotes</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800&display=swap"
+        rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../static/assets/css/global.css">
+    <link rel="stylesheet" href="../static/assets/css/login.css">
+</head>
+
+<body>
+    <div class="auth-bg">
+        <div class="auth-orb auth-orb-1"></div>
+        <div class="auth-orb auth-orb-2"></div>
+    </div>
+
+    <div class="split-layout">
+        <!-- Left Side: Visual -->
+        <div class="visual-side">
+            <a href="/" class="back-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Back to Home
+            </a>
+
+            <div class="visual-content reveal active">
+                <h1 class="text-gradient">Welcome back to your command center.</h1>
+                <p>Pick up exactly where you left off. Your AI assistant is pre-loaded with your entire research
+                    context.</p>
+            </div>
+        </div>
+
+        <!-- Right Side: Form -->
+        <div class="form-side">
+            <div class="form-container reveal active" style="transition-delay: 0.2s;">
+                <div class="brand">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 4h16v16H4V4z" fill="var(--primary-color)" fill-opacity="0.2" />
+                        <path d="M4 12V4h8M4 12v8h8M4 12h8M12 4h8v8h-8M12 20h8v-8h-8" stroke="var(--primary-color)"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    <span class="brand-text">NeuroNotes</span>
+                </div>
+
+                <h2 class="welcome-title">Sign In</h2>
+                <p class="welcome-subtitle">Access your intelligent workspaces</p>
+
+                {% if error %}
+                <div class="glass-panel"
+                    style="background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3); color: #fca5a5; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; text-align: center; font-size: 0.875rem;">
+                    {{ error }}
+                </div>
+                {% endif %}
+
+                <form action="/login" method="POST">
+                    <!-- Email -->
+                    <div class="input-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="name@example.com" required>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="input-group">
+                        <div class="flex justify-between items-center mb-1">
+                            <label for="password" style="margin-bottom: 0;">Password</label>
+                            <a href="#" class="forgot-password">Forgot password?</a>
+                        </div>
+                        <input type="password" id="password" name="password" placeholder="••••••••" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block mt-6"
+                        style="padding: 1rem;">Authenticate</button>
+
+                    <div class="divider">
+                        <span>OR</span>
+                    </div>
+
+                    <button type="button" class="btn btn-google btn-block"
+                        style="padding: 1rem; border-radius: var(--radius-full);">
+                        <svg class="google-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="18px"
+                            height="18px">
+                            <path fill="#EA4335"
+                                d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
+                            <path fill="#4285F4"
+                                d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.9c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
+                            <path fill="#FBBC05"
+                                d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
+                            <path fill="#34A853"
+                                d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
+                        </svg>
+                        Continue with Google
+                    </button>
+
+                    <div class="text-center mt-8 text-sm text-muted">
+                        Don't have an account? <a href="/signup"
+                            style="color: var(--primary-color); font-weight: 500;">Deploy Workspace</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
