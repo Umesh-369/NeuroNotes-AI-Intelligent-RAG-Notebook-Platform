@@ -103,30 +103,6 @@ def create_derived_document(notebook_id: int, title: str, content: str) -> str:
         return f"Error creating document: {str(e)}"
 
 @tool
-def extract_images_from_document(document_id: int, notebook_id: int) -> str:
-    """
-    Extracts all images from a PDF document and places them into a newly created PDF document.
-    Use this when a user asks to "extract images" or "save images" from a PDF.
-    """
-    doc = get_document_by_id(document_id)
-    if not doc:
-        return f"Error: Document with ID {document_id} not found."
-        
-    try:
-        from rag.document_editor import extract_images_to_pdf
-        filepath, new_filename = extract_images_to_pdf(document_id, notebook_id, doc['filepath'])
-        if not filepath:
-            return "No images were found in the document to extract."
-            
-        new_doc_id = add_document(notebook_id, new_filename, filepath)
-        process_success = process_document(filepath, new_doc_id, notebook_id)
-        
-        status = "and is ready for use." if process_success else "but semantic indexing failed."
-        return f"Successfully extracted images to a new document '{new_filename}' (ID {new_doc_id}) {status}"
-    except Exception as e:
-        return f"Error extracting images: {str(e)}"
-
-@tool
 def remove_pages_from_document(document_id: int, notebook_id: int, remove_pages: list[int], overwrite: bool = False) -> str:
     """
     Removes specific pages from a PDF document.
@@ -157,3 +133,85 @@ def remove_pages_from_document(document_id: int, notebook_id: int, remove_pages:
     except Exception as e:
         return f"Error removing pages: {str(e)}"
 
+@tool
+def web_search(query: str) -> str:
+    """
+    Perform a web search using DuckDuckGo to find relevant information.
+    Useful for gathering recent or external information on a specific topic.
+    """
+    try:
+        from ddgs import DDGS
+        ddgs = DDGS()
+        results = ddgs.text(query, max_results=5)
+        if not results:
+            return "No results found for the query."
+        
+        output = []
+        for r in results:
+            output.append(f"Title: {r.get('title')}\nURL: {r.get('href')}\nSummary: {r.get('body')}\n")
+        return "\n".join(output)
+    except Exception as e:
+        return f"Error performing web search: {str(e)}"
+
+@tool
+def fetch_url(url: str) -> str:
+    """
+    Extract the text content from a web page URL.
+    Helpful when you need detailed content from an important link.
+    """
+    try:
+        import requests
+        from bs4 import BeautifulSoup
+        
+        # Avoid blocking by passing a basic user agent
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'}
+        response = requests.get(url, headers=headers, timeout=10)
+        response.raise_for_status()
+        
+        soup = BeautifulSoup(response.text, 'html.parser')
+        
+        # Remove scripts, styles, etc.
+        for script in soup(["script", "style", "header", "footer", "nav"]):
+            script.decompose()
+            
+        text = soup.get_text(separator=' ', strip=True)
+        # Limit to first 20,000 characters to prevent context overflow
+        return text[:20000]
+    except Exception as e:
+        return f"Error fetching URL {url}: {str(e)}"
+
+@tool
+def send_email(recipient: str, subject: str, content: str) -> str:
+    """
+    Send an email containing a generated report or message.
+    """
+    try:
+        import smtplib
+        from email.mime.text import MIMEText
+        from email.mime.multipart import MIMEMultipart
+        
+        smtp_server = os.environ.get("SMTP_SERVER")
+        smtp_port = int(os.environ.get("SMTP_PORT", "587"))
+        email_user = os.environ.get("EMAIL_USER")
+        email_pass = os.environ.get("EMAIL_PASSWORD")
+        
+        if not email_user or not smtp_server:
+            # Fallback for demonstration if credentials are not configured
+            print(f"\n--- MOCK EMAIL SEND ---\nTo: {recipient}\nSubject: {subject}\n\n{content}\n-----------------------\n")
+            return f"Simulated sending email to {recipient} (SMTP credentials not configured in .env)."
+        
+        msg = MIMEMultipart()
+        msg['From'] = email_user
+        msg['To'] = recipient
+        msg['Subject'] = subject
+        msg.attach(MIMEText(content, 'plain'))
+        
+        server = smtplib.SMTP(smtp_server, smtp_port)
+        server.starttls()
+        server.login(email_user, email_pass)
+        server.send_message(msg)
+        server.quit()
+        
+        return f"Successfully sent email to {recipient}."
+    except Exception as e:
+        return f"Error sending email: {str(e)}"

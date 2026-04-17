@@ -12,8 +12,10 @@ from rag.tools import (
     read_full_document,
     list_notebook_documents,
     create_derived_document,
-    extract_images_from_document,
-    remove_pages_from_document
+    remove_pages_from_document,
+    web_search,
+    fetch_url,
+    send_email
 )
 from rag.document_processor import configure_gemini
 
@@ -28,8 +30,10 @@ tools = [
     search_knowledge_base,
     read_full_document,
     create_derived_document,
-    extract_images_from_document,
-    remove_pages_from_document
+    remove_pages_from_document,
+    web_search,
+    fetch_url,
+    send_email
 ]
 
 tool_node = ToolNode(tools)
@@ -47,23 +51,31 @@ def run_agent(state: AgentState):
     
     # Construct System Context
     system_instruction = (
-        f"You are a highly capable AI assistant operating within 'Notebook {state['notebook_id']}'.\n"
-        "Your primary job is to help the user understand, extract, edit, and generate content based on the documents in this notebook.\n\n"
+        f"You are an advanced research assistant AI operating within 'Notebook {state['notebook_id']}'.\n"
+        "Your primary job is to help the user with advanced research, document analysis, and comprehensive report generation.\n\n"
         
-        "CAPABILITIES & WORKFLOW:\n"
-        "1. If a user asks a general question about their documents, use `search_knowledge_base` first.\n"
-        "2. If a user asks to summarize, extract key points, or rewrite an entire document, use `read_full_document` first to get the content, and then use `create_derived_document` to save the results as a new file in the notebook.\n"
-        "3. If a user asks to extract images or copy images into a new document, use `extract_images_from_document`.\n"
-        "4. If a user asks to remove specific pages (like 'remove the last page' or 'delete page 3'), use `remove_pages_from_document`.\n"
-        "   - IMPORTANT: `remove_pages_from_document` has an `overwrite` argument. If the user asks to 'modify the existing pdf' or 'update this document', set `overwrite=True`.\n"
-        "   - If they ask to 'save as a new document' or 'put in a new document', set `overwrite=False`.\n"
-        "5. You must actively use your tools if the user implies they want an action performed.\n\n"
+        "RESEARCH CAPABILITIES & WORKFLOW:\n"
+        "1. When given a user topic, break it down into 3-5 focused sub-questions.\n"
+        "2. Use `web_search` to find relevant information for these sub-questions.\n"
+        "3. Use `fetch_url` to extract detailed textual content from the most important and relevant links.\n"
+        "4. Gather multiple reliable sources. Avoid duplicate or low-quality sources, prefer recent and credible information, and stop searching when you have sufficient coverage.\n"
+        "5. Generate a comprehensive report with the following structure:\n"
+        "   - Title\n"
+        "   - Executive Summary (5-6 lines)\n"
+        "   - Key Findings (organized by themes)\n"
+        "   - Important Insights\n"
+        "   - Sources (with URLs)\n"
+        "6. After generating the report, use the `send_email` tool to dispatch it to: s.u.s.hanumaprasad@gmail.com with the subject 'Research Report: <topic>'.\n\n"
         
-        "IMPORTANT FORMATTING RULES:\n"
+        "NOTEBOOK OPERATIONS:\n"
+        "You also retain your local notebook abilities. If the user asks about local documents:\n"
+        "- Use `search_knowledge_base`, `read_full_document`, `create_derived_document`, or `remove_pages_from_document` as needed.\n\n"
+        
+        "IMPORTANT RULES:\n"
+        "- Be efficient. Do not overuse tools (e.g., limit your recursive web searching to necessary bounds).\n"
+        "- Ensure the final generated report is presented to the user. \n"
         "- The frontend chat UI does NOT render Markdown. \n"
-        "- DO NOT use any markdown characters like **, *, #, -, or ` in your final response to the user.\n"
-        "- Use plain text, clear paragraphs, and standard punctuation only.\n"
-        "- If you successfully created a document, tell the user the specific name of it."
+        "- CRITICAL: DO NOT use any markdown characters like **, *, #, -, _, or ` in your final response to the user. Your output must be PLAIN TEXT ONLY. Use ALL CAPS for headers instead of bold or hashes. Use standard indentation and numbering for lists instead of asterisks or dashes."
     )
     
     system_message = SystemMessage(content=system_instruction)

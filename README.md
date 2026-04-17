@@ -1,10 +1,10 @@
 <div align="center">
   <img src="https://img.icons8.com/clouds/200/000000/brain.png" alt="Logo" width="150" height="150">
 
-  # GenAI Notebook Platform 🚀
+  # Advanced AI Research Assistant 🚀
 
   <p>
-    <strong>A powerful, intelligent workspace that combines traditional note-taking with cutting-edge Generative AI.</strong>
+    <strong>A powerful, intelligent workspace that combines document notes with an autonomous, web-connected research agent.</strong>
   </p>
 
   <!-- Badges -->
@@ -21,19 +21,21 @@
 
 ## 📖 Overview
 
-The **GenAI Notebook Platform** empowers users to create smart notebooks, upload reference documents, and interact seamlessly with their data. Powered by Retrieval-Augmented Generation (RAG) and intelligent LangGraph-powered AI agents, this platform acts as your personal AI research assistant.
+The **Advanced AI Research Assistant** transforms traditional note-taking into an autonomous intelligence hub. Powered by LangGraph and Google Generative AI (Gemini), the platform offers a powerful dual-model system: you can use the **Local RAG Chatbot** to strictly query your private uploaded documents, or engage the **Autonomous Agent** to perform live web searches, scrape web pages, and automatically dispatch comprehensive executive reports via email.
 
 ## ✨ Key Features
 
 | Feature | Description |
 | ------- | ----------- |
-| 🔐 **Secure User Authentication** | Full signup, login, and session management system to keep your personal notebooks strictly private and secure. |
-| 📓 **Intelligent Notebooks** | Create and manage distinct notebooks to elegantly organize your thoughts, projects, and related documents. |
-| 📄 **Document Processing & RAG** | Upload PDFs and text directly into notebooks. The system automates extraction, embedding, and indexing for instantaneous semantic search. |
-| 💬 **Conversational Querying** | A dedicated interface for chatting with your documents, producing dynamic and grounded responses backed by accurate source citations. |
-| 🤖 **Floating AI Agent** | A smart, independent floating chat assistant powered by LangGraph and Google Generative AI, accessible from anywhere. |
-| 💡 **Insights Management** | Save AI-generated answers or personal notes as "Insights" within your notebook for quick future reference. |
-| 🧹 **Resource Cleanup** | Fully managed resource deletion safely removes related files and vector embeddings to keep your storage clean when a notebook is deleted. |
+| 🔍 **Autonomous Web Searching** | The agent dynamically breaks down your research topics and queries the open web (DuckDuckGo Search) to gather up-to-date intel. |
+| 🕸️ **Deep Web Scraping** | Uses web scraping to extract full text context from URLs, incorporating detailed external content directly into your reports. |
+| 📧 **Automated Email Reports** | Generates highly structured, executive summaries and automatically emails the final research report directly to your inbox. |
+| 📄 **Document Processing & RAG** | Upload PDFs and text directly into project "Notebooks." The system automatically embeds and indexes them for high-speed semantic search. |
+| 💬 **Conversational RAG Chatbot** | A dedicated, local chat interface that answers questions strictly using your uploaded documents, ensuring responses are grounded directly in your private context via FAISS. |
+| 🤖 **Advanced LangGraph Agent** | A floating, smart conversational assistant capable of routing between local document tools and web tools seamlessly. |
+| 📝 **Strict Plain-Text Outputs** | The agent interface ensures distraction-free, pure plain-text output, natively removing markdown for streamlined readability. |
+| 📓 **Intelligent Notebook Management** | Create distinct notebooks to elegantly organize personal documents, securely compartmentalized by user authentication. |
+| 🧹 **Resource Cleanup** | Safe, automated removal of related files and vector embeddings to keep your storage clean when a notebook is deleted. |
 
 ## 🛠️ Technology Stack
 
@@ -42,8 +44,9 @@ Our platform leverages a robust and modern stack:
 *   **Backend Engineering:** Python 3, Flask, Werkzeug
 *   **AI & Orchestration:** LangChain, LangGraph, Google Generative AI (Gemini SDK)
 *   **Vector Database (RAG):** FAISS / ChromaDB for ultra-fast similarity search
-*   **Document Parsing:** PyPDF
-*   **Database:** Local Relational Database (SQLite) for comprehensive metadata management
+*   **Web Toolkit:** DuckDuckGo Search API, Requests, BeautifulSoup4
+*   **Communication:** SMTP Email Integration
+*   **Database:** SQLite for user and metadata management
 *   **Frontend Design:** HTML5, CSS3, Vanilla JavaScript, Jinja2 Templates
 
 ## 🚀 Getting Started
@@ -83,8 +86,17 @@ Ensure you have the following installed:
 4. **Configure Environment Variables**
    Create a `.env` file in the root directory and add your secret keys:
    ```env
+   # Core Config
    FLASK_SECRET_KEY="your_super_secret_key"
+   
+   # AI Config
    GOOGLE_API_KEY="your_google_gemini_api_key"
+   
+   # Email Config (for Report Dispatch)
+   SMTP_SERVER="smtp.gmail.com"
+   SMTP_PORT="587"
+   EMAIL_USER="your_email@gmail.com"
+   EMAIL_PASSWORD="your_app_password"
    ```
 
 5. **Run the Application**
@@ -101,12 +113,12 @@ A quick look at the top-level files and directories you'll see in this project:
 GenAI/
 ├── app.py                 # Main Flask application and API routing
 ├── requirements.txt       # Project dependencies
-├── .env                   # Environment variables (API keys, secrets)
+├── .env                   # Environment variables (API keys, secrets, SMTP)
 ├── database/              # Relational database models and initialization
 ├── rag/                   # AI logic, document processing, and RAG pipelines
 │   ├── document_processor.py # Parses and chunks files
 │   ├── faiss_store.py     # Vector database initialization and queries
-│   ├── chatbot.py         # Standard RAG retrieval logic
+│   ├── tools.py           # Web search, scraping, file ops, and email tools
 │   └── agent.py           # LangGraph-based conversational agent
 ├── templates/             # Jinja2 HTML templates
 ├── static/                # Static assets (CSS, JS, Images)

@@ -257,6 +257,10 @@ def agent_query():
         elif not isinstance(final_message, str):
             final_message = str(final_message)
             
+        import re
+        final_message = re.sub(r'[*_#]+', '', final_message)
+        final_message = final_message.replace('`', '')
+        
         return jsonify({"answer": final_message, "sources": []})
         
     except Exception as e:
